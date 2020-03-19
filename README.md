@@ -1,5 +1,5 @@
 # wsl-docker
-installation script to install docker in Windows subsystem for Linux
+Installation script to install docker in Windows subsystem for Linux
 
 
 Copy into WSL and run with sudo ./wsl-install.sh.
