@@ -26,6 +26,8 @@ curl -L https://github.com/docker/compose/releases/download/1.25.4/docker-compos
 chmod +x /usr/local/bin/docker-compose
 #Add docker to bashrc so it can be run anytime a terminal is opened.
 echo "export DOCKER_HOST=tcp://localhost:2375" >> ~/.bashrc && source ~/.bashrc
-echo "Finished.  
-Make sure to check the box to Expose daemon on tcp://localhost:2375 without TLS in docker settings."
+echo "Make sure to check the box to Expose daemon on tcp://localhost:2375 without TLS in docker settings.
+This step is not needed if using WSL version 2.  For more information on WSL version 2, please view the readme https://github.com/PR-lacity/wsl-docker/blob/master/README.md
+
+Finished."
 exit
