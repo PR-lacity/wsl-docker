@@ -23,15 +23,20 @@ echo "
 #######################################
        Please verify this output       
 #######################################
+
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 pub   rsa4096 2017-02-22 [SCEA]
       9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
 uid           [ unknown] Docker Release (CE deb) <docker@docker.com>
 sub   rsa4096 2017-02-22 [S]
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 Should match Output:
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+"
 sudo apt-key fingerprint 0EBFCD88
 echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 # Add the `stable` channel's Docker upstream repository.
@@ -68,8 +73,10 @@ then
 else
     echo "export DOCKER_HOST=tcp://localhost:2375" >> ~/.bashrc && source ~/.bashrc > /dev/null 2>&1
 fi
-echo "Make sure to check the box to Expose daemon on tcp://localhost:2375 without TLS in docker settings.
+echo "
+Make sure to check the box to Expose daemon on tcp://localhost:2375 without TLS in docker settings.
 This step is not needed if using WSL version 2.  
+
 For more information on WSL version 2, please view the readme:
 https://github.com/PR-lacity/wsl-docker/blob/master/README.md
 
