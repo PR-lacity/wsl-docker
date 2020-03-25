@@ -38,7 +38,8 @@ Should match Output:
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 "
 sudo apt-key fingerprint 0EBFCD88
-echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+"
 # Add the `stable` channel's Docker upstream repository.
 echo "Adding stable Docker repository"
 sudo add-apt-repository \
