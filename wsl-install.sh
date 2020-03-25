@@ -5,29 +5,72 @@ if [[ "$EUID" -ne 0 ]]
   exit
 fi
 # Update the apt package list.
-apt-get update -y
+echo "Updating package list"
+sudo apt-get update -y > /dev/null 2>&1
+
 # Install Docker's package dependencies.
-apt-get install apt-transport-https ca-certificates curl software-properties-common
+echo "Installing dependencies"
+sudo apt-get install -y \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common > /dev/null 2>&1
 # Download and add Docker's official public PGP key.
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+echo "Getting Docker public PGP key"
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - > /dev/null 2>&1
+# Verify the fingerprint.
+echo "
+#######################################
+       Please verify this output       
+#######################################
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+pub   rsa4096 2017-02-22 [SCEA]
+      9DC8 5822 9FC7 DD38 854A  E2D8 8D81 803C 0EBF CD88
+uid           [ unknown] Docker Release (CE deb) <docker@docker.com>
+sub   rsa4096 2017-02-22 [S]
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Should match Output:
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+sudo apt-key fingerprint 0EBFCD88
+echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 # Add the `stable` channel's Docker upstream repository.
-add-apt-repository \
-  "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) \
-  stable"
+echo "Adding stable Docker repository"
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable" > /dev/null 2>&1
 # Update the apt package list (for the new apt repo).
-apt-get update -y
+echo "Updating package list (added Docker repo)"
+sudo apt-get update -y > /dev/null 2>&1
 # Install the latest version of Docker CE.
-apt-get install -y docker-ce
-# Allow access to the Docker CLI without needing root access.
-usermod -aG docker $USER
-#Install docker-compose
-curl -L https://github.com/docker/compose/releases/download/1.25.4/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-chmod +x /usr/local/bin/docker-compose
-#Add docker to bashrc so it can be run anytime a terminal is opened.
-echo "export DOCKER_HOST=tcp://localhost:2375" >> ~/.bashrc && source ~/.bashrc
+echo "Installing Docker"
+sudo apt-get install -y docker-ce > /dev/null 2>&1
+# Allow your user to access the Docker CLI without needing root access.
+echo "Allowing user to run Docker without root access"
+sudo usermod -aG docker $USER > /dev/null 2>&1
+sudo chmod 666 /var/run/docker.sock > /dev/null 2>&1
+# Install Python and PIP.
+echo "Installing Python and PIP (needed for Docker-Compose)"
+sudo apt-get install -y python python-pip > /dev/null 2>&1
+# Install Docker Compose into your user's home directory.
+echo "Installing Docker-Compose"
+pip install --user docker-compose > /dev/null 2>&1
+if grep -Fxq 'export PATH="$PATH:$HOME/.local/bin"' ~/.profile
+then
+    echo "do nothing" > /dev/null 2>&1
+else
+    echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.profile && source ~/.profile > /dev/null 2>&1
+fi
+if grep -Fxq "export DOCKER_HOST=tcp://localhost:2375" ~/.bashrc
+then
+    echo "do nothing" > /dev/null 2>&1
+else
+    echo "export DOCKER_HOST=tcp://localhost:2375" >> ~/.bashrc && source ~/.bashrc > /dev/null 2>&1
+fi
 echo "Make sure to check the box to Expose daemon on tcp://localhost:2375 without TLS in docker settings.
-This step is not needed if using WSL version 2.  For more information on WSL version 2, please view the readme https://github.com/PR-lacity/wsl-docker/blob/master/README.md
+This step is not needed if using WSL version 2.  
+For more information on WSL version 2, please view the readme:
+https://github.com/PR-lacity/wsl-docker/blob/master/README.md
 
 Finished."
-exit
