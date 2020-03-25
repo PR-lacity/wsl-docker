@@ -15,10 +15,9 @@ Output: `Microsoft Windows [Version 10.0.19041.153]` 19041 is the build version.
     
 Convert current WSL distros to WSL 2:
     
-    `wsl --list`
-        
-    `wsl --set-version <Distro> 2`
+    wsl --list   
+    wsl --set-version <Distro> 2
         
 Set WSL 2 as the default WSL version:
     
-    `wsl --set-default-version 2`
+    wsl --set-default-version 2
